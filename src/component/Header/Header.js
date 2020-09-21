@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Button, Form, FormControl, Nav, Navbar } from 'react-bootstrap';
+import logo from '../images/Logo.png';
 // import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 // import { faSearch } from '@fortawesome/free-solid-svg-icons'
 // import './Header'
@@ -8,13 +9,13 @@ const Header = () => {
     
     return (
         <>
-            <Navbar expand="lg" style={{margin: '0% 9%'}} bg="primary" fixed="top">
-                <Navbar.Brand ></Navbar.Brand>
+            <Navbar expand="lg" style={{margin: '0% 0%', width: '100%'}} bg="primary" fixed="top">
+            <Navbar.Brand ><img style={{height: '40px'}} src={logo} alt=""/></Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Form inline style={{width:'35%',marginLeft:'5%',color:'#fff'}}>
                         {/* <FontAwesomeIcon style={{position: 'absolute',marginLeft:'10px'}} icon={faSearch} /> */}
-                        <FormControl type="text" placeholder="Search" className="mr-sm-2" />
+                        <FormControl type="text" style={{paddingLeft:'35px',width:'100%'}} placeholder="Search" className="mr-sm-2" />
                     </Form>
                     <Nav className="ml-auto">
                     
