@@ -13,38 +13,46 @@ import NotFound from './component/NotFound/NotFound';
 import Register from './component/Register/Register';
 import GmailAndFbSignin from './component/Login/GmailAndFbSignin';
 import Home from './component/Home/Home';
+import { createContext } from 'react';
+import PrivateRoute from './PrivateRoute/PrivateRoute';
 
+export const UserContext = createContext();
 
 function App() {
+  const [loggedInUser, setLoggedInUser] = useState({});
   const [city, setCity] = useState();
   return (
-    <div style={{marginTop: '50px'}}>
+    <div style={{ marginTop: '50px' }}>
+      <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
+      
       <Router>
         <Switch>
-        <Route exact path="/login">
-        <Header></Header>
+          <Route exact path="/login">
+            <Header></Header>
             <Login></Login>
             <GmailAndFbSignin></GmailAndFbSignin>
           </Route>
           <Route path="/register">
-          <Header></Header>
+            <Header></Header>
             <Register></Register>
             <GmailAndFbSignin></GmailAndFbSignin>
           </Route>
-        <Route exact path="/destination">
-        <Header></Header>
+          <PrivateRoute exact path="/destination">
+            <Header></Header>
             <Destination city={city}></Destination>
-          </Route>
+          </PrivateRoute>
           <Route exact path="/">
             <Header></Header>
             <Home setCity={setCity}></Home>
           </Route>
           <Route exact path="*">
-          <Header></Header>
+            <Header></Header>
             <NotFound></NotFound>
           </Route>
         </Switch>
       </Router>
+      <p style={{marginTop: '10px'}}>Name: {loggedInUser.name}</p>
+      </UserContext.Provider>
     </div>
   );
 }

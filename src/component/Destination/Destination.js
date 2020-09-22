@@ -8,7 +8,6 @@ const Destination = (props) => {
     console.log(props);
     return (
         <>
-        {/* <LoginHeader></LoginHeader> */}
         <div style={{ marginTop: '100px' }}>
             <div className="m-auto" style={{ borderBottom: '1px solid lightgray', width: '80%' }}></div>
         </div>

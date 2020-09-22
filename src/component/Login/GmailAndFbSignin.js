@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import fbLogo from '../images/Icon/fb1.png'
 import googleLogo from '../images/Icon/google1.png'
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import firebaseConfig from './firebaseConfig';
+import { UserContext } from '../../App';
+import { useHistory, useLocation } from 'react-router-dom';
+
 
 const GmailAndFbSignin = () => {
     const signInBtnStyle = {
@@ -10,6 +16,40 @@ const GmailAndFbSignin = () => {
         borderRadius: '20px',
         backgroundColor: 'rgba(255, 255, 255, 0.2)',
         marginTop: '10px'
+    }
+
+    const [user, setUser] = useState({
+        isSignIn: false,
+        name: '',
+        email: '',
+        photo: ''
+    })
+
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
+
+    const history = useHistory();
+    const location = useLocation();
+    let { from } = location.state || { from: { pathname: "/" } };
+
+    if(firebase.apps.length === 0 ){
+        firebase.initializeApp(firebaseConfig);
+    }
+
+ const provider = new firebase.auth.GoogleAuthProvider();
+    const googleSignIn = () => {
+        firebase.auth().signInWithPopup(provider)
+        .then( res => {
+            const {displayName,email,photoURL} = res.user;
+            const signnedInUser = {
+                isSignedIn: true,
+                name: displayName,
+                email: email,
+                photo: photoURL
+              }
+              setUser(signnedInUser);
+              setLoggedInUser(signnedInUser);
+              history.replace(from);
+          })
     }
     return (
         <div className="col-md-3 m-auto">
@@ -20,7 +60,7 @@ const GmailAndFbSignin = () => {
             </div>
         <div className="mt-4">
             <button  style={signInBtnStyle}><img src={fbLogo} className="float-left py-1" alt="" /> Continue with Facebook</button>
-            <button  style={signInBtnStyle}><img src={googleLogo} className="float-left py-1" alt="" />Continue with Google</button>
+            <button onClick={googleSignIn} style={signInBtnStyle}><img src={googleLogo} className="float-left py-1" alt="" />Continue with Google</button>
         </div>
     </div>
     );
