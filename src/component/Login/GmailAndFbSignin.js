@@ -19,10 +19,12 @@ const GmailAndFbSignin = () => {
     }
 
     const [user, setUser] = useState({
-        isSignIn: false,
+        isSignedIn: false,
         name: '',
         email: '',
-        photo: ''
+        photo: '',
+        error: '',
+        success: false
     })
 
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);

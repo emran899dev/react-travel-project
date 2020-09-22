@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import hotelImage1 from '../images/Image/Rectangle 26.png'
 import hotelImage2 from '../images/Image/Rectangle 27.png'
 import hotelImage3 from '../images/Image/Rectangle 28.png'
 import star from '../images/Icon/star_1_.png'
+import { UserContext } from '../../App';
 
 const Destination = (props) => {
-    console.log(props);
+    const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     return (
         <>
         <div style={{ marginTop: '100px' }}>
@@ -13,7 +14,10 @@ const Destination = (props) => {
         </div>
         <div className="col-md-10 m-auto">
             <div className="col-md-12 m-4">
-                {/* <h2>{props.city ? props.city.name : ''}</h2> */}
+                {/* {
+                     loggedInUser.success && <p style={{ color: 'green' }}>User Created Successfully </p>
+                } */}
+                <h2>{props.city ? props.city.name : ''}</h2>
             </div>
             <div className="row mt-5">
                 <div className="col-md-7">

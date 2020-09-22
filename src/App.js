@@ -51,7 +51,6 @@ function App() {
           </Route>
         </Switch>
       </Router>
-      <p style={{marginTop: '10px'}}>Name: {loggedInUser.name}</p>
       </UserContext.Provider>
     </div>
   );

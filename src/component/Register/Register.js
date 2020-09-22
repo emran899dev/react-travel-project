@@ -1,42 +1,122 @@
-import React from 'react';
+// import React, { useState } from 'react';;
+// import { Button, Card, Form } from 'react-bootstrap';
+// import { Link } from 'react-router-dom';
+// import * as firebase from "firebase/app";
+// import "firebase/auth";
+// import firebaseConfig from './firebaseConfig';
+
+import React, { useState } from 'react';
 import { Button, Card, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import * as firebase from "firebase/app";
+import "firebase/auth";
+import firebaseConfig from '../Login/firebaseConfig';
+
 
 const Register = () => {
+    const [user, setUser] = useState({
+        isSignedIn: false,
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        photo: '',
+        error: '',
+        success: false
+    });
+
+    if (firebase.apps.length === 0) {
+        firebase.initializeApp(firebaseConfig);
+    }
+
+    const handleSubmit = (e) => {
+        // console.log(user.email, user.password);
+        if (user.email && user.password) {
+            firebase.auth().createUserWithEmailAndPassword(user.email, user.password)
+                .then(res => {
+                    const newUserInfo = { ...user };
+                    newUserInfo.error = '';
+                    newUserInfo.success = true;
+                    setUser(newUserInfo);
+                })
+                .catch(error => {
+                    // Handle Errors here.
+                    const newUserInfo = { ...user };
+                    newUserInfo.error = error.message;
+                    newUserInfo.success = false;
+                    setUser(newUserInfo);
+                    // ...
+                });
+        }
+        e.preventDefault();
+    }
+
+    const handleBlur = (e) => {
+        let isFieldValid = true;
+        if (e.target.name === 'email') {
+            const validEmail = /\S+@\S+\.\S+/;
+            isFieldValid = validEmail.test(e.target.value);
+        }
+        if (e.target.name === 'password') {
+            let password = e.target.value;
+            const isPasswordValid = password.length > 6;
+            const passwordHasNumber = /\d{1}/.test(password);
+            isFieldValid = isPasswordValid && passwordHasNumber;
+
+        }
+        if (e.target.name === 'confirmPassword') {
+            let confirmPassword = e.target.value;
+            const isPasswordValid = confirmPassword.length > 6;
+            const passwordHasNumber = /\d{1}/.test(confirmPassword);
+            isFieldValid = isPasswordValid && passwordHasNumber;
+        }
+
+        if (isFieldValid) {
+            const newUserInfo = { ...user };
+            newUserInfo[e.target.name] = e.target.value;
+            setUser(newUserInfo);
+        }
+
+    }
     return (
         <div>
             <div className="col-md-4 m-auto">
                 <Card style={{ width: '100%', padding: '4%', marginTop: '150px' }}>
                     <Card.Body>
                         <Card.Title>Create an account</Card.Title>
-                        <Form className="mt-5">
+                        <Form onSubmit={handleSubmit} className="mt-5">
                             <Form.Group controlId="formBasicEmail">
-                                <Form.Control type="text"  name="firstname" style={{ border: 'none', borderBottom: '1px solid gray' }} placeholder="first name"  required/>
+                                <Form.Control type="text" name="firstname" onBlur={handleBlur} style={{ border: 'none', borderBottom: '1px solid gray' }} placeholder="First name" required />
                             </Form.Group>
                             <Form.Group className="mt-4" controlId="formBasicPassword">
-                                <Form.Control type="text"  name="lastname" style={{ border: 'none', borderBottom: '1px solid gray' }} placeholder="last name" required />
+                                <Form.Control type="text" name="lastname" onBlur={handleBlur} style={{ border: 'none', borderBottom: '1px solid gray' }} placeholder="Last name" required />
                             </Form.Group>
                             <Form.Group className="mt-4" controlId="formBasicPassword">
-                                <Form.Control type="email"  name="email" style={{ border: 'none', borderBottom: '1px solid gray' }} placeholder="Username or Password" required />
+                                <Form.Control type="email" name="email" onBlur={handleBlur} style={{ border: 'none', borderBottom: '1px solid gray' }} placeholder="Your E-mail" required />
                             </Form.Group>
                             <Form.Group className="mt-4" controlId="formBasicPassword">
-                                <Form.Control type="password"  name="password" style={{ border: 'none', borderBottom: '1px solid gray' }} placeholder="Password" required />
+                                <Form.Control type="password" name="password" onBlur={handleBlur} style={{ border: 'none', borderBottom: '1px solid gray' }} placeholder="Password" required />
                             </Form.Group>
                             <Form.Group className="mt-4" controlId="formBasicPassword">
-                                <Form.Control type="password"  name="confirmPassword" style={{ border: 'none', borderBottom: '1px solid gray' }} placeholder="Confirm Password" required />
+                                <Form.Control type="password" name="confirmPassword" onBlur={handleBlur} style={{ border: 'none', borderBottom: '1px solid gray' }} placeholder="Confirm Password" required />
                             </Form.Group>
                             <Button className="mt-4 rounded-0" style={{ width: '100%', backgroundColor: '#F9A51A', color: 'black' }} type="submit">
                                 Create an Account
                             </Button>
-                            
+
 
                             <Form.Text className="text-center mt-3" style={{ fontSize: '17px' }}>
                                 Already have account?<Link to="/login" style={{ color: '#F9A51A' }}>Login</Link>
+                                <p style={{ color: 'red' }}>{user.error}</p>
+                                {
+                                    user.success && <p style={{ color: 'green' }}>User Created Successfully </p>
+                                }
                             </Form.Text>
                         </Form>
                     </Card.Body>
                 </Card>
             </div>
+
         </div>
     );
 };
