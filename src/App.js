@@ -24,33 +24,33 @@ function App() {
   return (
     <div style={{ marginTop: '50px' }}>
       <UserContext.Provider value={[loggedInUser, setLoggedInUser]}>
-      
-      <Router>
-        <Switch>
-          <Route exact path="/login">
-            <Header></Header>
-            <Login></Login>
-            <GmailAndFbSignin></GmailAndFbSignin>
-          </Route>
-          <Route path="/register">
-            <Header></Header>
-            <Register></Register>
-            <GmailAndFbSignin></GmailAndFbSignin>
-          </Route>
-          <PrivateRoute exact path="/destination">
-            <Header></Header>
-            <Destination city={city}></Destination>
-          </PrivateRoute>
-          <Route exact path="/">
-            <Header></Header>
-            <Home setCity={setCity}></Home>
-          </Route>
-          <Route exact path="*">
-            <Header></Header>
-            <NotFound></NotFound>
-          </Route>
-        </Switch>
-      </Router>
+
+        <Router>
+          <Switch>
+            <Route exact path="/login">
+              <Header></Header>
+              <Login></Login>
+              <GmailAndFbSignin></GmailAndFbSignin>
+            </Route>
+            <Route path="/register">
+              <Header></Header>
+              <Register></Register>
+              <GmailAndFbSignin></GmailAndFbSignin>
+            </Route>
+            <PrivateRoute exact path="/destination">
+              <Header></Header>
+              <Destination city={city}></Destination>
+            </PrivateRoute>
+            <Route exact path="/">
+              <Header></Header>
+              <Home setCity={setCity}></Home>
+            </Route>
+            <Route exact path="*">
+              <Header></Header>
+              <NotFound></NotFound>
+            </Route>
+          </Switch>
+        </Router>
       </UserContext.Provider>
     </div>
   );

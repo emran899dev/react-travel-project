@@ -17,7 +17,7 @@ const Login = () => {
         success: false
     });
 
-    
+
 
     const [loggedInUser, setLoggedInUser] = useContext(UserContext);
     const history = useHistory();
@@ -29,6 +29,7 @@ const Login = () => {
         firebase.initializeApp(firebaseConfig);
     }
 
+    // User signInWithEmailAndPassword
     const handleSubmit = (e) => {
         // console.log(user.email, user.password);
         if (user.email && user.password) {
@@ -52,7 +53,7 @@ const Login = () => {
         }
         e.preventDefault();
     }
-
+    // Login Validation
     const handleBlur = (e) => {
         let isFieldValid = true;
         if (e.target.name === 'email') {
@@ -72,6 +73,19 @@ const Login = () => {
             setUser(newUserInfo);
         }
 
+    }
+
+    //  password reset email
+    const passwordReset = (email) => {
+        var auth = firebase.auth();
+        auth.sendPasswordResetEmail(email)
+            .then(() => {
+                const newUserInfo = { ...user };
+                setUser(newUserInfo);
+            })
+            .catch(function (error) {
+                // An error happened.
+            });
     }
     return (
         <div>
@@ -96,7 +110,7 @@ const Login = () => {
                                     />
                                 </Form.Group>
                                 <Form.Group>
-                                    <a href="#" style={{ color: '#F9A51A' }} >Forgot Password</a>
+                                    <a href="#" onClick={() => passwordReset(user.email)} style={{ color: '#F9A51A' }} >Forgot Password</a>
                                 </Form.Group>
                             </div>
                             <Button className="mt-5 rounded-0" style={{ width: '100%', backgroundColor: '#F9A51A', color: 'black' }} type="submit">
@@ -114,7 +128,7 @@ const Login = () => {
 
                     </Card.Body>
                 </Card>
-               
+
 
             </div>
         </div>

@@ -29,6 +29,7 @@ const Register = () => {
         firebase.initializeApp(firebaseConfig);
     }
 
+    // User createUserWithEmailAndPassword
     const handleSubmit = (e) => {
         // console.log(user.email, user.password);
         if (user.email && user.password) {
@@ -37,6 +38,7 @@ const Register = () => {
                     const newUserInfo = { ...user };
                     newUserInfo.error = '';
                     newUserInfo.success = true;
+                    verifyEmail();
                     setUser(newUserInfo);
                 })
                 .catch(error => {
@@ -51,6 +53,15 @@ const Register = () => {
         e.preventDefault();
     }
 
+    // User Email Verify  
+    const verifyEmail = () => {
+        var user = firebase.auth().currentUser;
+        user.sendEmailVerification().then(function () {
+            // Email sent.
+        }).catch(function (error) {
+            // An error happened.
+        });
+    }
     const handleBlur = (e) => {
         let isFieldValid = true;
         if (e.target.name === 'email') {
